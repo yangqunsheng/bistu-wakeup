@@ -4,6 +4,7 @@ on:
   push:
     tags:
       - 'v*'
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -21,16 +22,23 @@ jobs:
       - name: Run tests
         run: go test ./... -v
 
-      - name: Build all platforms
+      - name: Build release binaries
         run: |
           mkdir -p build
           GOOS=windows GOARCH=amd64 go build -ldflags="-s -w" -o build/bistu-wakeup-windows-amd64.exe .
           GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o build/bistu-wakeup-linux-amd64 .
           GOOS=darwin GOARCH=amd64 go build -ldflags="-s -w" -o build/bistu-wakeup-darwin-amd64 .
           GOOS=darwin GOARCH=arm64 go build -ldflags="-s -w" -o build/bistu-wakeup-darwin-arm64 .
+          cd build
+          sha256sum * > checksums.txt
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          files: build/*
+          files: |
+            build/bistu-wakeup-windows-amd64.exe
+            build/bistu-wakeup-linux-amd64
+            build/bistu-wakeup-darwin-amd64
+            build/bistu-wakeup-darwin-arm64
+            build/checksums.txt
           generate_release_notes: true

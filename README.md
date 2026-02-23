@@ -1,40 +1,69 @@
 # bistu-wakeup
 
-北京信息科技大学教务系统课表导出工具（WakeUp 课表 CSV 格式）。
+北京信息科技大学教务系统课表导出 CLI（WakeUp CSV 导入格式）。
 
-## 功能
+## 下载与发布
 
-- 支持学号+密码登录（CAS）
-- 支持 `--cookie` 模式登录
-- 自动拉取学期并选择导出
-- 导出 WakeUp 可导入的 CSV
+请在 GitHub Releases 页面下载预编译二进制文件（不是源码压缩包）：
 
-## 运行环境
+- `bistu-wakeup-windows-amd64.exe`
+- `bistu-wakeup-linux-amd64`
+- `bistu-wakeup-darwin-amd64`
+- `bistu-wakeup-darwin-arm64`
 
-- Go 1.22+
+Release 地址：
 
-## 快速开始
+`https://github.com/yangqunsheng/bistu-wakeup/releases`
+
+## CLI 使用说明
+
+### 1. 交互式登录（默认）
+
+直接运行程序后，按提示输入学号、密码并选择学期：
+
+```bash
+# Windows
+./bistu-wakeup-windows-amd64.exe
+
+# Linux
+./bistu-wakeup-linux-amd64
+
+# macOS (Intel)
+./bistu-wakeup-darwin-amd64
+
+# macOS (Apple Silicon)
+./bistu-wakeup-darwin-arm64
+```
+
+运行完成后，会在当前目录生成：
+
+`schedule_<term>.csv`
+
+### 2. Cookie 模式（高级用法）
+
+```bash
+./bistu-wakeup-linux-amd64 --cookie "JSESSIONID=xxx; route=xxx"
+```
+
+参数说明：
+
+- `--cookie`：直接使用浏览器中的教务系统 Cookie 登录
+
+## 导入 WakeUp
+
+1. 在本工具中导出 `schedule_<term>.csv`
+2. 打开 WakeUp
+3. 选择“导入课表”
+4. 选择导出的 CSV 文件
+
+## 源码运行（开发者）
 
 ```bash
 go mod tidy
-go run . 
+go run .
 ```
-
-按提示输入学号、密码并选择学期后，会在当前目录生成 `schedule_<term>.csv`。
-
-## Cookie 模式
-
-```bash
-go run . --cookie "JSESSIONID=xxx; route=xxx"
-```
-
-## 目录说明
-
-- `auth/`：登录与认证
-- `schedule/`：课表抓取与解析
-- `export/`：CSV 导出
 
 ## 说明
 
-- `build/` 目录用于本地 release 产物，不纳入版本控制。
-- `.spec-workflow/` 为开发流程资料，不对外开源。
+- `build/` 为 release 产物目录，不纳入代码仓库。
+- `.spec-workflow/` 为开发过程文档，不开源。
