@@ -1,0 +1,11 @@
+build/
+.spec-workflow/
+
+# Generated exports
+schedule_*.csv
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
