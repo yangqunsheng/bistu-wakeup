@@ -62,8 +62,3 @@ Release 地址：
 go mod tidy
 go run .
 ```
-
-## 说明
-
-- `build/` 为 release 产物目录，不纳入代码仓库。
-- `.spec-workflow/` 为开发过程文档，不开源。
